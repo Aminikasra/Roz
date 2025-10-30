@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>گردونه شانس</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .description {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        .wheel-container {
+            position: relative;
+            width: 400px;
+            height: 400px;
+            margin: 0 auto 40px;
+        }
+        
+        .wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: conic-gradient(
+                from 0deg,
+                #ff5e5e 0% 1%,    /* 1% */
+                #ff8e5e 1% 2%,    /* 2% */
+                #ffb85e 2% 3%,    /* 3% */
+                #ffe15e 3% 4%,    /* 4% */
+                #e1ff5e 4% 5%,    /* 5% */
+                #a8ff5e 5% 6%,    /* 6% */
+                #5eff7a 6% 7%,    /* 7% */
+                #5effa8 7% 8%,    /* 8% */
+                #5effd6 8% 9%,    /* 9% */
+                #5ee1ff 9% 10%,   /* 10% */
+                #5ea8ff 10% 11%,  /* 11% */
+                #5e7aff 11% 12%,  /* 12% */
+                #8e5eff 12% 13%,  /* 13% */
+                #b85eff 13% 14%,  /* 14% */
+                #e15eff 14% 15%,  /* 15% */
+                #ff5ee1 15% 16%,  /* 16% */
+                #ff5ea8 16% 17%,  /* 17% */
+                #ff5e7a 17% 18%,  /* 18% */
+                #ff5e5e 18% 19%,  /* 19% */
+                #ff8e5e 19% 20%,  /* 20% */
+                #ffb85e 20% 21%,  /* 21% */
+                #ffe15e 21% 22%,  /* 22% */
+                #e1ff5e 22% 23%,  /* 23% */
+                #a8ff5e 23% 24%,  /* 24% */
+                #5eff7a 24% 25%,  /* 25% */
+                #5effa8 25% 26%,  /* 26% */
+                #5effd6 26% 27%,  /* 27% */
+                #5ee1ff 27% 28%,  /* 28% */
+                #5ea8ff 28% 29%,  /* 29% */
+                #5e7aff 29% 30%,  /* 30% */
+                #8e5eff 30% 100%  /* 31-100% */
+            );
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            transition: transform 4s cubic-bezier(0.17, 0.67, 0.83, 0.67);
+            position: relative;
+        }
+        
+        .wheel::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 50px;
+            background: #fff;
+            border-radius: 50%;
+            z-index: 2;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .pointer {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 50px;
+            background: #fff;
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+            z-index: 3;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .spin-btn {
+            background: #ffcc00;
+            color: #333;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .spin-btn:hover {
+            background: #ffd633;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .spin-btn:active {
+            transform: translateY(1px);
+        }
+        
+        .spin-btn:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .result {
+            margin-top: 30px;
+            font-size: 1.5rem;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .result-value {
+            font-weight: bold;
+            font-size: 2rem;
+            color: #ffcc00;
+            margin-right: 10px;
+        }
+        
+        .stats {
+            margin-top: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .stats h2 {
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+        
+        .stats p {
+            margin: 10px 0;
+            font-size: 1.1rem;
+        }
+        
+        @media (max-width: 500px) {
+            .wheel-container {
+                width: 300px;
+                height: 300px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>گردونه شانس</h1>
+        <p class="description">شانس خود را با گردونه ما امتحان کنید! از 1% تا 100% شانس برنده شدن دارید.</p>
+        
+        <div class="wheel-container">
+            <div class="pointer"></div>
+            <div class="wheel" id="wheel"></div>
+        </div>
+        
+        <button class="spin-btn" id="spinBtn">چرخاندن گردونه</button>
+        
+        <div class="result" id="result">
+            نتیجه شما: <span class="result-value" id="resultValue">-</span>
+        </div>
+        
+        <div class="stats">
+            <h2>آمار گردونه</h2>
+            <p>تعداد کل چرخش‌ها: <span id="totalSpins">0</span></p>
+            <p>میانگین نتیجه: <span id="averageResult">0</span>%</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const wheel = document.getElementById('wheel');
+            const spinBtn = document.getElementById('spinBtn');
+            const resultValue = document.getElementById('resultValue');
+            const totalSpinsElement = document.getElementById('totalSpins');
+            const averageResultElement = document.getElementById('averageResult');
+            
+            let isSpinning = false;
+            let totalSpins = 0;
+            let totalResult = 0;
+            
+            // تابع برای تولید عدد تصادفی بین 1 تا 30
+            function getRandomResult() {
+                return Math.floor(Math.random() * 30) + 1;
+            }
+            
+            // تابع برای چرخاندن گردونه
+            function spinWheel() {
+                if (isSpinning) return;
+                
+                isSpinning = true;
+                spinBtn.disabled = true;
+                
+                // پاک کردن نتیجه قبلی
+                resultValue.textContent = '-';
+                
+                // تولید نتیجه تصادفی بین 1 تا 30
+                const result = getRandomResult();
+                
+                // محاسبه زاویه چرخش برای نمایش نتیجه
+                // هر درصد معادل 3.6 درجه است (360/100)
+                // اما ما می‌خواهیم نتیجه بین 1 تا 30 باشد
+                const degrees = 3600 + (result * 3.6); // چند دور کامل + نتیجه
+                
+                // چرخاندن گردونه
+                wheel.style.transform = `rotate(${degrees}deg)`;
+                
+                // نمایش نتیجه پس از اتمام چرخش
+                setTimeout(() => {
+                    resultValue.textContent = `${result}%`;
+                    isSpinning = false;
+                    spinBtn.disabled = false;
+                    
+                    // به روزرسانی آمار
+                    totalSpins++;
+                    totalResult += result;
+                    totalSpinsElement.textContent = totalSpins;
+                    averageResultElement.textContent = Math.round(totalResult / totalSpins);
+                }, 4000);
+            }
+            
+            // اضافه کردن رویداد کلیک به دکمه چرخش
+            spinBtn.addEventListener('click', spinWheel);
+        });
+    </script>
+</body>
+</html>
